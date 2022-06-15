@@ -1,8 +1,14 @@
+// const DATABASE_NAME='invitary_db1';
+// const USERNAME='root';
+// const PASSWORD='root';
+// const HOST='localhost';
+// const PORT='8889';
+// const DIALECT='mysql';
 const DATABASE_NAME='invitary_db1';
-const USERNAME='root';
-const PASSWORD='root';
+const USERNAME='invitary_ivan';
+const PASSWORD='Rezaasidqi354';
 const HOST='localhost';
-const PORT='8889';
+const PORT='3306';
 const DIALECT='mysql';
 
 module.exports = {
