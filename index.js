@@ -1,8 +1,52 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const { Author, Book } = require('./sequelize')
+const { Author, Book, User, Comment } = require('./sequelize')
 const app = express()
 app.use(bodyParser.json())
+
+// Create User
+app.post('/users', (req, res) => {
+  console.log(req.body)
+  User.create(req.body)
+    .then(user => {
+      res.json(user)
+    })
+})
+// Get All Users
+app.get('/users', (req, res) => {
+  User.findAll().then(user =>
+  res.json(user))
+})
+// Create Comment
+app.post('/comment', (req, res) => {
+  console.log(req.body)
+  Comment.create(req.body)
+    .then(comment => {
+      res.json(comment)
+    })
+})
+// Get All Commment
+app.get('/comment/:userId', (req, res) => {
+  // findall where UserId = req.body.userId
+  Comment.findAll(
+    {
+      where: {
+        userId: req.params.userId
+      }
+    }
+  ).then(comment =>
+  res.json(comment))
+})
+// delete comment by id from params.id
+app.delete('/comment/:id', (req, res) => {
+  Comment.destroy({
+    where: {
+      id: req.params.id
+    }
+  }).then(comment =>
+    res.json(comment))
+})
+
 // Create a Author
 app.post('/demoApi/author', (req, res) => {
   console.log(req.body)
