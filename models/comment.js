@@ -7,10 +7,7 @@ module.exports = (sequelize, type) => {
       },
       name: type.STRING,
       comment: type.STRING,
-      // createdAt: {
-      //   type: type.DATE,
-      //   defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-      // },
+      confirmation: type.STRING,
       userId: type.INTEGER,
   })
 }

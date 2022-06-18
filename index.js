@@ -2,7 +2,19 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const { Author, Book, User, Comment } = require('./sequelize')
 const app = express()
+const cors = require('cors')
 app.use(bodyParser.json())
+
+app.use(cors())
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header("Access-Control-Allow-Credentials", true)
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Request-With, Content-Type, Accept, Authorization'
+  )
+  next()
+})
 
 // Create User
 app.post('/users', (req, res) => {
@@ -10,12 +22,18 @@ app.post('/users', (req, res) => {
   User.create(req.body)
     .then(user => {
       res.json(user)
+    }).catch((err) => {
+      res.json(err)
+      console.log(err)
     })
 })
 // Get All Users
 app.get('/users', (req, res) => {
   User.findAll().then(user =>
-  res.json(user))
+  res.json(user)).catch((err) => {
+    console.log(err)
+    res.json(err)
+  })
 })
 // Create Comment
 app.post('/comment', (req, res) => {
@@ -23,7 +41,11 @@ app.post('/comment', (req, res) => {
   Comment.create(req.body)
     .then(comment => {
       res.json(comment)
-    })
+    }).catch(err => {
+      console.log(err)
+      res.json(err)
+    }
+  )
 })
 // Get All Commment
 app.get('/comment/:userId', (req, res) => {
@@ -32,10 +54,17 @@ app.get('/comment/:userId', (req, res) => {
     {
       where: {
         userId: req.params.userId
-      }
+      },
+      // sort by createdAt
+      order: [
+        ['createdAt', 'DESC']
+      ]
     }
   ).then(comment =>
-  res.json(comment))
+  res.json(comment)).catch((err) => {
+    res.json(err)
+    console.log(err)
+  })
 })
 // delete comment by id from params.id
 app.delete('/comment/:id', (req, res) => {
@@ -44,7 +73,10 @@ app.delete('/comment/:id', (req, res) => {
       id: req.params.id
     }
   }).then(comment =>
-    res.json(comment))
+    res.json(comment)).catch((err) => {
+      res.json(err)
+      console.log(err)
+    })
 })
 
 // Create a Author
